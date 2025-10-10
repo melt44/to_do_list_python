@@ -1,0 +1,17 @@
+# Ignora a pasta do ambiente virtual
+.venv/
+venv/
+
+# Ignora arquivos de cache Python
+__pycache__/
+*.pyc
+
+# Ignora arquivos específicos do Flask/Dev
+instance/
+.vscode/
+
+# Ignora o arquivo de banco de dados local do SQLite (se usar)
+*.db
+
+# Ignora logs
+*.log

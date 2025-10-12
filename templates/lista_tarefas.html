@@ -1,0 +1,24 @@
+<html>
+    <h1>
+        Lista de Tarefas by gpimenta
+    </h1>
+    <table border="5">
+        <tr>
+            <th>
+                Nome da tarefa
+            </th>
+            <th>
+                Está ativa?
+            </th>
+        {% for task in tarefas: %}
+            <tr>
+                <td>
+                    {{task[0]}}
+                </td>
+                <td>
+                    {{task[1]}}
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+</html>

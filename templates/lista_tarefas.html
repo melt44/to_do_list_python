@@ -2,23 +2,30 @@
     <h1>
         Lista de Tarefas by gpimenta
     </h1>
-    <table border="5">
-        <tr>
-            <th>
-                Nome da tarefa
-            </th>
-            <th>
-                Está ativa?
-            </th>
-        {% for task in tarefas: %}
+    <body>
+        <form method="post" action="/add">
+            <input type="text" name="nomeTask" placeholder="Nome da tarefa">
+            <input type="text" name="dataFim" placeholder="Data fim">
+            <input type="submit" value="Add task">
+        </form>
+        <table border="5">
             <tr>
-                <td>
-                    {{task[0]}}
-                </td>
-                <td>
-                    {{task[1]}}
-                </td>
-            </tr>
-        {% endfor %}
-    </table>
+                <th>
+                    Nome da tarefa
+                </th>
+                <th>
+                    Está feito?
+                </th>
+            {% for task in tarefas %}
+                <tr>
+                    <td>
+                        {{ task[0] }}
+                    </td>
+                    <td>
+                        {{ task[1] }}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </body>
 </html>

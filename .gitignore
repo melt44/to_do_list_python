@@ -6,4 +6,4 @@ instance/
 .vscode/
 *.db
 *.log
-DB.py
+.env

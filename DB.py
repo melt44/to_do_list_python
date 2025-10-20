@@ -6,10 +6,10 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # atribuir as varíáveis às credenciais
-db_name = os.getenv("DB_NAME")
-db_user = os.getenv("DB_USER")
-db_host = os.getenv("DB_HOST")
-db_pw = os.getenv("DB_PASSWORD")
+db_name = os.getenv("db_name")
+db_user = os.getenv("db_user")
+db_host = os.getenv("db_host")
+db_pw = os.getenv("db_pw")
 
 
 def getTaskList():

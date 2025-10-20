@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for
-from DB import getTaskList, addTask
+from DB import getTaskList, addTask, updateTask, deleteTask
 
 app = Flask(__name__)
 
@@ -16,5 +16,17 @@ def add():
     dataFim = request.form['dataFim']
     addTask(nomeTask, dataFim)
     return redirect(url_for('home_pg'))
+
+@app.route("/update", methods=['POST'])
+def update():
+    nomeTaskAtualizada = request.form['updateTask']
+    id = request.form['ID']
+    button = request.form['saveOrDelete']
+    if button == 'save':
+        updateTask(nomeTaskAtualizada, id)
+    elif button == 'X':
+        deleteTask(id)
+    return redirect(url_for('home_pg'))
+
 
 app.run()

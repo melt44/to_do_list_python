@@ -8,10 +8,11 @@ Este é um aplicativo de lista de tarefas desenvolvido em Python com o framework
 
 
 ✨ Funcionalidades
-Gestão Completa (CRUD): Adiciona, edita e exclui tarefas.
 
-Status Rápido: Checkbox para marcar tarefas como concluídas.
+* Gestão Completa (CRUD): Adiciona, edita e exclui tarefas.
 
-Tema de Halloween: Estilização escura e visual de susto (áudio e GIFs) ativado no botão 'X'.
+* Status Rápido: Checkbox para marcar tarefas como concluídas.
 
-Tecnologias: Flask, PostgreSQL, Tailwind CSS e JavaScript.
+* Tema de Halloween: Estilização escura e visual de susto (áudio e GIFs) ativado no botão 'X'.
+
+* Tecnologias: Flask, PostgreSQL, Tailwind CSS e JavaScript.

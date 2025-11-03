@@ -1,40 +1,153 @@
-<html>
-    <h1>
-        Lista de Tarefas by gpimenta
-    </h1>
-    <body>
-        <form method="post" action="/add">
-            <input type="text" name="nomeTask" placeholder="Nome da tarefa">
-            <input type="text" name="dataFim" placeholder="Data fim">
-            <input type="submit" value="Add task">
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Tarefas | Halloween</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+<style>
+    .susto-overlay { 
+        position: fixed; 
+        top: 0; 
+        left: 0; 
+        width: 100vw; 
+        height: 100vh;
+        
+        z-index: 1000; 
+        
+        opacity: 0; 
+        visibility: hidden;
+        transition: opacity 0.1s ease-out; 
+        
+        display: flex; 
+        align-items: center;
+        justify-content: center;
+        background-color: white; 
+        padding: 0;
+    }
+    .susto-overlay.active { 
+        opacity: 1; 
+        visibility: visible;
+    }
+    .susto-overlay img {
+        max-width:100%; 
+        max-height: 100%;
+        object-fit: contain;
+    }
+
+    .table-header { display: flex; align-items: center; }
+    .table-header.center { justify-content: center; }
+    .table-header.start { justify-content: flex-start; }
+</style>
+</head>
+<body class="bg-gray-900 p-8 flex flex-col items-center font-sans">
+    
+    <body class="bg-gray-900 p-8 flex flex-col items-center font-sans">
+    
+    <div id="fnaf-susto" class="susto-overlay">
+        <img src="{{ url_for('static', filename='img/foxy-fnaf.gif') }}" alt="Susto FNaF">
+    </div>
+    <div id="mengo-susto" class="susto-overlay">
+        <img src="{{ url_for('static', filename='img/flamengo-goku.gif') }}" alt="Susto Flamengo">
+    </div>
+    <audio id="jumpscare-sound" src="{{ url_for('static', filename='sound/mengo.mp3') }}" preload="auto"></audio>
+
+        <h1 class="text-3xl font-extrabold mb-6 text-center text-orange-400">
+            &#x1F383 &#x1F56F Lista de Tarefas Assombrada &#x1F47B &#x1F578
+        </h1>
+
+        <form method="post" action="{{ url_for('add') }}" class="flex gap-3 mb-8 items-center">
+            <input 
+                type="text" 
+                name="nomeTask" 
+                placeholder="Nome da tarefa" 
+                required
+                class="flex-grow p-2 border border-gray-600 bg-gray-700 text-gray-100 rounded-lg focus:ring-orange-500 focus:border-orange-500"
+            >
+            <input 
+                type="text" 
+                name="dataFim" 
+                placeholder="mm/dd/yyyy"
+                class="w-32 p-2 border border-gray-600 bg-gray-700 text-gray-100 rounded-lg"
+            >
+            <input 
+                type="submit" 
+                value="Add task"
+                class="bg-orange-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-orange-700 cursor-pointer transition duration-150"
+            >
         </form>
-        <table border="5">
-            <tr>
-                <th>
-                    Nome da tarefa
-                </th>
-                <th>
-                    Está feito?
-                </th>
-            {% for task in tarefas %}
-                <tr>
-                    <form method="post" action="/update">   
-                        <td>
+
+        <table class="w-full rounded-lg overflow-hidden shadow-lg border border-gray-700">
+            <thead>
+                <tr class="bg-gray-700 text-gray-200">
+                    <th class="p-3 text-sm font-semibold tracking-wide text-center w-1/12">Feito?</th>
+                    <th class="p-3 text-sm font-semibold tracking-wide text-left w-1/2">Tarefa</th>
+                    <th class="p-3 text-sm font-semibold tracking-wide text-left w-1/6">Data Limite</th>
+                    <th class="p-3 text-sm font-semibold tracking-wide text-left w-1/4">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for task in tarefas %}
+                <tr class="bg-gray-800 border-b border-gray-700 hover:bg-gray-700">
+                    
+                    <td class="p-3 text-sm text-gray-200 text-center">
+                        <form method="post" action="{{ url_for('status_feito') }}">
                             <input type="hidden" name="ID" value="{{ task[0] }}" />
-                            <input type="text" name="updateTask" value="{{ task[1] }}" />
+                            
+                            <input 
+                                type="checkbox" 
+                                name="is_done_toggle" 
+                                onchange="this.form.submit()" 
+                                {% if task[2] %}checked{% endif %}
+                                class="h-5 w-5 text-orange-500 bg-gray-600 border-gray-500 rounded focus:ring-orange-400 cursor-pointer"
+                            >
+                        </form>
+                    </td>
+                    
+                    <form method="post" action="{{ url_for('update') }}" class="contents"> 
+                        <input type="hidden" name="ID" value="{{ task[0] }}" />
+
+                        <td class="p-3 text-sm text-gray-200">
+                            <input 
+                                type="text" 
+                                name="updateTask" 
+                                value="{{ task[1] }}"
+                                class="w-full p-1 border border-transparent bg-gray-800 focus:border-purple-500 rounded-md
+                                {% if task[2] %} line-through text-gray-500 {% endif %}"
+                            />
                         </td>
-                        <td>
-                            {{ task[2] }}
+                        
+                        <td class="p-3 text-sm text-gray-200 text-center">
+                            <span class="font-medium text-orange-300">
+                                {{ task[3] if task[3] else 'N/A' }}
+                            </span>
                         </td>
-                        <td>
-                            <input type="submit" name="saveOrDelete" value="save">
-                        </td>
-                        <td>
-                            <input type="submit" name="saveOrDelete" value="X">
+                        
+                        <td class="p-3 text-sm text-gray-200 flex space-x-2 justify-start">
+                            <input 
+                                type="submit" 
+                                name="saveOrDelete" 
+                                value="save"
+                                class="bg-purple-700 text-white px-3 py-1 rounded-md font-medium hover:bg-purple-800 cursor-pointer"
+                            >
+                            <input 
+                                type="submit" 
+                                name="saveOrDelete" 
+                                value="X"
+                                class="bg-red-800 text-white px-3 py-1 rounded-md font-medium hover:bg-red-900 cursor-pointer"
+                                id="delete-button-{{ task[0] }}"
+                            >
                         </td>
                     </form>
                 </tr>
-            {% endfor %}
+                {% endfor %}
+            </tbody>
         </table>
-    </body>
+        
+        {% if not tarefas %}
+        <p class="text-center text-gray-500 mt-4">A lista está pronta para ser assombrada! Adicione uma tarefa.</p>
+        {% endif %}
+    </div>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
 </html>

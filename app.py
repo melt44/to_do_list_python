@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for
-from DB import getTaskList, addTask, updateTask, deleteTask
+from DB import getTaskList, addTask, updateTask, deleteTask, mudarStatusTask
 
 app = Flask(__name__)
 
@@ -26,6 +26,16 @@ def update():
         updateTask(nomeTaskAtualizada, id)
     elif button == 'X':
         deleteTask(id)
+    return redirect(url_for('home_pg'))
+
+@app.route("/status_feito", methods=['POST'])
+def status_feito():
+    try:
+        task_id = int(request.form['ID'])
+        mudarStatusTask(task_id)
+    except ValueError:
+        print("ERRO: ID da tarefa inválido.")
+    
     return redirect(url_for('home_pg'))
 
 
